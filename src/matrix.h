@@ -10,7 +10,7 @@
 using namespace std;
 namespace utec {
 
-    class Matrix {
+    class matrix {
     private:
         int** values; // Puntero a puntero para representar la matriz dinámica
         int rows_; // Número de filas de la matriz
@@ -18,10 +18,10 @@ namespace utec {
 
     public:
         // Constructor por parámetros
-        Matrix(int rows, int cols);
+        matrix(int rows, int cols);
 
         // Destructor
-        ~Matrix() {
+        ~matrix() {
             // Liberar la memoria dinámica de la matriz
             for (int i = 0; i < rows_; ++i) {
                 delete[] values[i];
@@ -38,15 +38,18 @@ namespace utec {
             return values[row][col];
         }
 
+        matrix& operator=(const matrix& other);
+
+
         // Sobrecarga de operador para imprimir la matriz
-        friend std::ostream& operator<<(std::ostream& os, const Matrix& m) {
+        friend ostream& operator<<(ostream& out, const matrix& m) {
             for (int i = 0; i < m.rows_; ++i) {
                 for (int j = 0; j < m.cols_; ++j) {
-                    os << std::setw(4) << m.values[i][j] << " "; // Espacio de 4 caracteres para cada elemento
+                    out << setw(4) << m.values[i][j] << " "; // Espacio de 4 caracteres para cada elemento
                 }
-                os << std::endl;
+                out << endl;
             }
-            return os;
+            return out;
         }
 
         // Método para obtener el número de filas de la matriz
