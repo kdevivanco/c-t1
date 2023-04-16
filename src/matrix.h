@@ -35,25 +35,7 @@ namespace utec {
         matrix operator+(const matrix& other) const;
 
         //multiplicacion de matrices
-        matrix operator*(const matrix& other) const {
-            if (cols_ != other.rows_) {
-                return other;
-            }
-
-            matrix result(rows_, other.cols_);
-
-            for (int i = 0; i < rows_; ++i) {
-                for (int j = 0; j < other.cols_; ++j) {
-                    int sum = 0;
-                    for (int k = 0; k < cols_; ++k) {
-                        sum += values[i * cols_ + k] * other.values[k * other.cols_ + j];
-                    }
-                    result(i, j) = sum;
-                }
-            }
-
-            return result;
-        }
+        matrix operator*(const matrix& other) const;
 
         // multiplicacion con escalar
         matrix operator*(const int scalar) const;
@@ -61,12 +43,11 @@ namespace utec {
 
         // multiplicacion = con escalar
         matrix& operator*=(const int scalar);
+
+
         // Destructor
         ~matrix() {
-            // Liberar la memoria dinámica de la matriz
-//            for (int i = 0; i < rows_; ++i) {
-//                delete[] values[i];
-//            }
+            //Liberar la memoria dinámica de la matriz
             delete[] values;
         }
 
@@ -76,14 +57,10 @@ namespace utec {
 
 
         // Sobrecarga de operador para asignar los elementos de la matriz
-        int& operator()(int row, int col) const {
-            return values[row * cols_ + col];
-        }
-
-
-
+        int& operator()(int row, int col) const;
 
         // Sobrecarga de operador para imprimir la matriz
+        //Por alguna razon el programa se cae si lo pongo fuera del .h
         friend ostream& operator<<(ostream& out, const matrix& m) {
             for (int i = 0; i < m.rows_; ++i) {
                 for (int j = 0; j < m.cols_; ++j) {
@@ -94,18 +71,6 @@ namespace utec {
             }
             return out;
         }
-
-
-//        friend istream& operator>>(istream& in, matrix& m){
-//            for (size_t i = 0; i < m.rows_; ++i) {
-//                for (size_t j = 0; j < m.cols_; ++j) {
-//                    cout << m;
-//                    in >> m.values[i * m.cols_ + j];
-//                }
-//            }
-//            return in;
-//        }
-
 
         // Método para obtener el número de filas de la matriz
         int rows() const {

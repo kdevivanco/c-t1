@@ -28,7 +28,12 @@ matrix::matrix(const matrix& other){
             values[i * cols_ + j] = other(i,j);
 }
 
+//Sobrecarga () para indexar la matriz
+int& matrix::operator()(int row, int col) const{
+    return values[row * cols_ + col];
+}
 
+//Sobre carga =
 matrix &matrix::operator=(const matrix& other){
     if (&other == this) {
         return *this;
@@ -43,6 +48,7 @@ matrix &matrix::operator=(const matrix& other){
     return *this;
 }
 
+//Sobrecarga al booleano ==
 bool matrix::operator==(const matrix& other) const{
     //Si son de diferentes dimensiones
     if (rows_ != other.rows_ || cols_ != other.cols_) {
@@ -58,6 +64,7 @@ bool matrix::operator==(const matrix& other) const{
     return true;
 }
 
+//Sobrecarga al booleano !=
 bool matrix::operator!=(const matrix& other) const {
     return !(*this == other); //Como el == ya esta sobre cargado puedo llamarlo en esta
 }
@@ -92,6 +99,28 @@ matrix matrix::operator*(const int scalar) const {
     return result;
 }
 
+//Sobre carga multiplicacion de matrices
+matrix matrix::operator*(const matrix& other) const {
+    if (cols_ != other.rows_) {
+        return other;
+    }
+
+    matrix result(rows_, other.cols_);
+
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < other.cols_; ++j) {
+            int sum = 0;
+            for (int k = 0; k < cols_; ++k) {
+                sum += values[i * cols_ + k] * other.values[k * other.cols_ + j];
+            }
+            result(i, j) = sum;
+        }
+    }
+
+    return result;
+}
+
+//Sobre carga *=
 matrix &matrix::operator*=(const int scalar) {
     for (int i = 0; i < rows_; ++i) {
         for (int j = 0; j < cols_; ++j) {
@@ -101,7 +130,7 @@ matrix &matrix::operator*=(const int scalar) {
 
     return *this;
 }
-
+//Sobrecarga a multiplicacion en orden contrario - no es member function
 matrix operator*(const int scalar, const matrix& m) {
     return m * scalar;
 }
