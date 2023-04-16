@@ -28,25 +28,9 @@ namespace utec {
         matrix& operator=(const matrix& other);
 
         //Sobrecarga operador ==;
-        bool operator==(const matrix& other) const {
-            //Si son de diferentes dimensiones
-            if (rows_ != other.rows_ || cols_ != other.cols_) {
-                return false;
-            }
+        bool operator==(const matrix& other) const;
 
-            //Si tienen diferente valor por fila
-            for (int i = 0; i < rows_ * cols_; ++i) {
-                if (values[i] != other.values[i]) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        bool operator!=(const matrix& other) const {
-            return !(*this == other); //Como el == ya esta sobre cargado puedo llamarlo en esta
-        }
-
+        bool operator!=(const matrix& other) const;
         //suma de matrices
         matrix operator+(const matrix& other) const;
 

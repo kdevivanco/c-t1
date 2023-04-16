@@ -43,6 +43,26 @@ matrix &matrix::operator=(const matrix& other){
     return *this;
 }
 
+bool matrix::operator==(const matrix& other) const{
+    //Si son de diferentes dimensiones
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+        return false;
+    }
+
+    //Si tienen diferente valor por fila
+    for (int i = 0; i < rows_ * cols_; ++i) {
+        if (values[i] != other.values[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool matrix::operator!=(const matrix& other) const {
+    return !(*this == other); //Como el == ya esta sobre cargado puedo llamarlo en esta
+}
+
+
 //Sobre carga suma, funciona
 matrix matrix::operator+(const matrix& other) const {
     if (rows_ != other.rows_ || cols_ != other.cols_) {
