@@ -23,6 +23,9 @@ matrix::matrix(const matrix& other){
     rows_ = other.rows_;
     cols_ = other.cols_;
     values = new int[rows_*cols_];
+    for (size_t i = 0; i < other.rows_; ++i)
+        for (size_t j = 0; j < other.cols_; ++j)
+            values[i * cols_ + j] = other(i,j);
 }
 
 
@@ -41,13 +44,20 @@ matrix &matrix::operator=(const matrix& other){
 }
 
 int main(){
-    matrix m(3, 3); //Esto funcona
-    m(1,1) = 1; //Esto funciona
-    cin >> m(1,2); //Esto funciona
-    cout<<m; //esto funciona
-    matrix mtestcop(3,3); //esto funciona
-    mtestcop = m; //esto funciona
+    //ESTO FUNCIONA:
+    matrix m(3, 3);
+    m(1,1) = 1;
+    cin >> m(1,2);
+    cout<<m; //
+
+    //ESTO FUNCIONA:
+    matrix mtestcop;
+    mtestcop = m;
     cout<< "copytest\n"<<mtestcop;
+
+    //ESTO ya FUNCIONA
+    matrix secondtest = m;
+    cout<< "copytest\n"<<secondtest;
 
 
 
