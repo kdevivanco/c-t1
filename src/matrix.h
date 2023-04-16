@@ -24,12 +24,59 @@ namespace utec {
         //Constructor copia
         matrix(const matrix& other);
 
-        //Asignacion copia
+        //Asignacion copia Sobre carga =
         matrix& operator=(const matrix& other);
 
-        //Constructor move
+        //Sobrecarga operador ==;
+        bool operator==(const matrix& other) const {
+            //Si son de diferentes dimensiones
+            if (rows_ != other.rows_ || cols_ != other.cols_) {
+                return false;
+            }
+
+            //Si tienen diferente valor por fila
+            for (int i = 0; i < rows_ * cols_; ++i) {
+                if (values[i] != other.values[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        bool operator!=(const matrix& other) const {
+            return !(*this == other); //Como el == ya esta sobre cargado puedo llamarlo en esta
+        }
+
+        //suma de matrices
+        matrix operator+(const matrix& other) const;
+
+        //multiplicacion de matrices
+        matrix operator*(const matrix& other) const {
+            if (cols_ != other.rows_) {
+                return other;
+            }
+
+            matrix result(rows_, other.cols_);
+
+            for (int i = 0; i < rows_; ++i) {
+                for (int j = 0; j < other.cols_; ++j) {
+                    int sum = 0;
+                    for (int k = 0; k < cols_; ++k) {
+                        sum += values[i * cols_ + k] * other.values[k * other.cols_ + j];
+                    }
+                    result(i, j) = sum;
+                }
+            }
+
+            return result;
+        }
+
+        // multiplicacion con escalar
+        matrix operator*(const int scalar) const;
 
 
+        // multiplicacion = con escalar
+        matrix& operator*=(const int scalar);
         // Destructor
         ~matrix() {
             // Liberar la memoria dinámica de la matriz
@@ -49,7 +96,6 @@ namespace utec {
             return values[row * cols_ + col];
         }
 
-        //Sobre carga operador =
 
 
 
@@ -57,7 +103,7 @@ namespace utec {
         friend ostream& operator<<(ostream& out, const matrix& m) {
             for (int i = 0; i < m.rows_; ++i) {
                 for (int j = 0; j < m.cols_; ++j) {
-                    out << setw(4) <<  m(i, j) << " ";
+                    out << setw(3) <<  m(i, j) << " ";
 
                 }
                 std::cout << std::endl;

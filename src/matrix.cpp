@@ -43,44 +43,46 @@ matrix &matrix::operator=(const matrix& other){
     return *this;
 }
 
-int main(){
-    //ESTO FUNCIONA:
-    matrix m(3, 3);
-    m(1,1) = 1;
-    cin >> m(1,2);
-    cout<<m; //
+//Sobre carga suma, funciona
+matrix matrix::operator+(const matrix& other) const {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+        return other; //por mientras ponemos esto, luego habra que implementar el error
+    }
 
-    //ESTO FUNCIONA:
-    matrix mtestcop;
-    mtestcop = m;
-    cout<< "copytest\n"<<mtestcop;
+    matrix result(rows_, cols_);
 
-    //ESTO ya FUNCIONA
-    matrix secondtest = m;
-    cout<< "copytest\n"<<secondtest;
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            result(i, j) = values[i * cols_ + j] + other.values[i * cols_ + j];
+        }
+    }
 
-
-
-    random_device rd;
-    utec::matrix m1(8, 9);
-    utec::matrix m2(4, 5);
-    uniform_int_distribution<int> dis(0, 100);
-    for (size_t i = 0; i < m1.rows(); ++i)
-        for (size_t j = 0; j < m1.cols(); ++j)
-            m1(i, j) = dis(rd);
-    // Copia
-    utec::matrix m3 = m1;
-    for (size_t i = 0; i < m2.rows(); ++i)
-        for (size_t j = 0; j < m2.cols(); ++j)
-            m2(i, j) = dis(rd);
-    cout << m1.rows() << " " << m1.cols() << endl;
-    cout << m2.rows() << " " << m2.cols() << endl;
-    cout << m1 << endl << m2 << endl;
-    // Move
-    std::swap(m1, m2); // El swap es lo que malogra las matrices, deja todos los valores en 0!
-    m2(0, 0) = 100;
-    cout << m1.rows() << " " << m1.cols() << endl;
-    cout << m2.rows() << " " << m2.cols() << endl;
-    cout << m1 << endl << m2 << endl << m3 <<endl;
-
+    return result;
 }
+//Sobre carga * -> multiplicacion por escalar FUNCIONA!
+matrix matrix::operator*(const int scalar) const {
+    matrix result(rows_, cols_);
+
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            result(i, j) = values[i * cols_ + j] * scalar;
+        }
+    }
+
+    return result;
+}
+
+matrix &matrix::operator*=(const int scalar) {
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            values[i * cols_ + j] *= scalar;
+        }
+    }
+
+    return *this;
+}
+
+matrix operator*(const int scalar, const matrix& m) {
+    return m * scalar;
+}
+
