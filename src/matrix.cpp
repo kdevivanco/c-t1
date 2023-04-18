@@ -14,8 +14,20 @@ matrix::matrix(int rows, int cols){
     rows_ = rows;
     cols_ = cols;
     int size = rows_ * cols_;
-    values = new int[size]; // Memoria dinamica
+    values = new int[size]; // Array unidimensional almacenado en memoria dinamica que contiene todos los valores de la matriz
 }
+
+//Sobrecarga () para indexar la matriz y asingar valores
+int& matrix::operator()(int row, int col) const{
+    return values[row * cols_ + col];
+}
+//Sobre la formula rows * cols_ + col
+//Leer -> La formula row * cols_ + col es la formula de indexacion de la matriz, en lugar de poner (i,j) ya que values es unidimensional
+// "row": índice de fila del elemento indexado (parametro - valor)
+// "cols_" numero total de columnas (variable miembro)
+// "col"  índice de columna del elemento indexado (parametro - valor)
+// row * cols_ = desplazamiento para la fila, + cols = desplazamiento en fila y columna -> ubicacion del indice
+
 
 // Constructor copia
 matrix::matrix(const matrix& other){
@@ -31,10 +43,6 @@ matrix::matrix(const matrix& other){
             values[i * cols_ + j] = other(i,j);
 }
 
-//Sobrecarga () para indexar la matriz
-int& matrix::operator()(int row, int col) const{
-    return values[row * cols_ + col];
-}
 
 //Sobre carga =
 matrix &matrix::operator=(const matrix& other){
