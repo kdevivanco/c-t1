@@ -1,20 +1,23 @@
 //
-// Created by rudri on 3/23/2022.
+// Kayla de Vivanco Briceno
 //
 #include<iostream>
+typedef size_t SIZE_TYPE;
 #include <random>
 
 #include "matrix.h"
 using namespace utec;
 using namespace std;
 
+//Constructor por parametros
 matrix::matrix(int rows, int cols){
     rows_ = rows;
     cols_ = cols;
     int size = rows_ * cols_;
-    values = new int[size];
+    values = new int[size]; // Memoria dinamica
 }
 
+// Constructor copia
 matrix::matrix(const matrix& other){
     if(&other == this){
         return;
@@ -87,7 +90,7 @@ matrix matrix::operator+(const matrix& other) const {
     return result;
 }
 //Sobre carga * -> multiplicacion por escalar FUNCIONA!
-matrix matrix::operator*(const int scalar) const {
+matrix matrix::operator*(int scalar) const {
     matrix result(rows_, cols_);
 
     for (int i = 0; i < rows_; ++i) {
@@ -101,12 +104,15 @@ matrix matrix::operator*(const int scalar) const {
 
 //Sobre carga multiplicacion de matrices
 matrix matrix::operator*(const matrix& other) const {
+   //Si son de diferente dimensiones
     if (cols_ != other.rows_) {
         return other;
     }
 
+    //Creamos matriz para almacenar los resultados
     matrix result(rows_, other.cols_);
 
+    //Se multiplican los valores
     for (int i = 0; i < rows_; ++i) {
         for (int j = 0; j < other.cols_; ++j) {
             int sum = 0;
@@ -121,7 +127,7 @@ matrix matrix::operator*(const matrix& other) const {
 }
 
 //Sobre carga *=
-matrix &matrix::operator*=(const int scalar) {
+matrix &matrix::operator*=(int scalar) {
     for (int i = 0; i < rows_; ++i) {
         for (int j = 0; j < cols_; ++j) {
             values[i * cols_ + j] *= scalar;
@@ -130,8 +136,12 @@ matrix &matrix::operator*=(const int scalar) {
 
     return *this;
 }
+
 //Sobrecarga a multiplicacion en orden contrario - no es member function
-matrix operator*(const int scalar, const matrix& m) {
+//Esto es en caso la operacion tenga como lhs el int, es decir -> m1 = 5 * m2
+//Esta sobrecarga redirecciona a la sobre carga de clase matriz donde se multiplica matriz * int escalar
+//Sin esta sobre carga, la multiplicacion no funcionaria para casos donde lhs es int
+utec::matrix operator*(int scalar, utec::matrix m) {
     return m * scalar;
 }
 

@@ -1,5 +1,5 @@
 //
-// Created by rudri on 3/23/2022.
+// Kayla de Vivanco Briceno
 //
 
 #ifndef PROG3_UNIT1_TAREA_INTRODUCTORIA_V2022_1_MATRIX_H
@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
+
+typedef size_t SIZE_TYPE;
 namespace utec {
 
     class matrix {
@@ -27,10 +29,12 @@ namespace utec {
         //Asignacion copia Sobre carga =
         matrix& operator=(const matrix& other);
 
-        //Sobrecarga operador ==;
+        //Sobrecarga operador ==
         bool operator==(const matrix& other) const;
 
+        //Sobre carga operador !=
         bool operator!=(const matrix& other) const;
+
         //suma de matrices
         matrix operator+(const matrix& other) const;
 
@@ -84,4 +88,7 @@ namespace utec {
     };
     istream &operator>> (istream &in, matrix& m);
 }
+
+utec::matrix operator*(int scalar, utec::matrix m);
+
 #endif //PROG3_UNIT1_TAREA_INTRODUCTORIA_V2022_1_MATRIX_H
